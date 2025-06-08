@@ -1,0 +1,71 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: employees_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+    - "5433:5432"
+
+  employees:
+    build: ./employees
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://admin:admin@postgres:5432/employees_db
+    volumes:
+      - ./employees/logs:/app/logs
+
+  attendance:
+    build: ./attendance
+    ports:
+      - "3002:3002"
+    depends_on:
+      - postgres
+      - rabbitmq
+    environment:
+      - DATABASE_URL=postgresql://admin:admin@postgres:5432/attendance_db
+      - RABBITMQ_URL=amqp://rabbitmq
+    volumes:
+      - ./attendance/logs:/app/logs
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  payroll:
+    build: ./payroll
+    ports:
+      - "3003:3003"
+    depends_on:
+      - postgres
+      - rabbitmq
+    environment:
+      - DATABASE_URL=postgresql://admin:admin@postgres:5432/payroll_db
+      - RABBITMQ_URL=amqp://rabbitmq
+    volumes:
+      - ./payroll/logs:/app/logs
+
+  tax:
+    build: ./tax
+    ports:
+      - "3004:3004"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://admin:admin@postgres:5432/tax_db
+    volumes:
+      - ./tax/logs:/app/logs
+
+
+volumes:
+  pgdata:

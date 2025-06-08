@@ -1,0 +1,13 @@
+[2025-06-06 21:50:28] INFO: Payroll service running on port 3003
+[2025-06-06 21:50:28] INFO: Payroll consumer is listening for attendance events...
+[2025-06-07 02:32:00] INFO: Payroll service running on port 3003
+[2025-06-07 02:32:00] ERROR: Error fetching payroll: Error: getaddrinfo ENOTFOUND postgres
+[2025-06-07 02:32:00] ERROR: Failed to start consumer: Error: getaddrinfo ENOTFOUND rabbitmq
+[2025-06-07 02:42:45] ERROR: Error fetching payroll database "payroll_test" does not exist
+[2025-06-07 02:45:59] ERROR: Error fetching payroll database "payroll_test" does not exist
+[2025-06-07 02:47:40] ERROR: Error fetching payroll database "payroll_test" does not exist
+[2025-06-07 02:56:30] ERROR: Error fetching payroll database "payroll_test" does not exist
+[2025-06-08 01:23:36] INFO: Payroll service running on port 3003
+[2025-06-08 01:23:36] ERROR: Failed to start consumer: Error: getaddrinfo ENOTFOUND rabbitmq
+[2025-06-07 22:24:43] INFO: Payroll service running on port 3003
+[2025-06-07 22:24:43] INFO: Payroll consumer is listening for attendance events...

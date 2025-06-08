@@ -1,0 +1,8 @@
+[2025-06-06 21:16:58] INFO: Attendance service running on port 3002
+[2025-06-06 21:17:03] INFO: Attendance recorded: employeeId=1, date=2025-06-07, hours=7
+[2025-06-07 02:22:00] INFO: Attendance service running on port 3002
+[2025-06-07 02:22:01] ERROR: Error fetching attendance: Error: getaddrinfo ENOTFOUND postgres
+[2025-06-07 02:22:01] ERROR: Error creating attendance record: Error: getaddrinfo ENOTFOUND postgres
+[2025-06-07 02:25:04] INFO: Attendance service running on port 3002
+[2025-06-07 02:25:04] INFO: Attendance recorded: employeeId=1, date=2025-06-06, hours=5
+[2025-06-08 00:08:21] INFO: Attendance service running on port 3002

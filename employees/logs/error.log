@@ -1,0 +1,4 @@
+[2025-06-07 01:38:07] ERROR: Error fetching employees: Error: getaddrinfo ENOTFOUND postgres
+[2025-06-07 01:38:07] ERROR: Error creating employee: Error: getaddrinfo ENOTFOUND postgres
+[2025-06-07 01:43:17] ERROR: Error fetching employees: Error: getaddrinfo ENOTFOUND postgres
+[2025-06-07 01:43:17] ERROR: Error creating employee: Error: getaddrinfo ENOTFOUND postgres
