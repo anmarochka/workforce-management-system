@@ -16,9 +16,9 @@ jobs:
           POSTGRES_PASSWORD: admin
           POSTGRES_DB: attendance_db
         ports:
-          - 5433:5432
+          - 5432:5432
         options: >-
-          --health-cmd="pg_isready"
+          --health-cmd="pg_isready -U admin"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -32,6 +32,13 @@ jobs:
         with:
           node-version: 20
 
+      - name: Wait for Postgres to be ready
+        run: |
+          until pg_isready -h postgres -p 5432 -U admin; do
+            echo "Waiting for postgres..."
+            sleep 2
+          done
+
       - name: Install dependencies
         run: npm install
         working-directory: attendance
@@ -41,7 +48,6 @@ jobs:
         working-directory: attendance
         env:
           DATABASE_URL: postgresql://admin:admin@postgres:5432/attendance_db
-
 
       - name: Build project
         run: npm run build
