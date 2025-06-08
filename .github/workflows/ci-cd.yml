@@ -5,23 +5,8 @@ on:
     branches: [ main ]
 
 jobs:
-  build-test-deploy:
+  build-services:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: admin
-          POSTGRES_PASSWORD: admin
-          POSTGRES_DB: attendance_db
-        ports:
-          - 5433:5432
-        options: >-
-          --health-cmd="pg_isready -U admin"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     steps:
       - name: Checkout code
@@ -32,31 +17,34 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install PostgreSQL client
-        run: sudo apt-get update && sudo apt-get install -y postgresql-client
-
-      - name: Wait for Postgres to be ready
-        run: |
-          for i in {1..30}; do
-            pg_isready -h localhost -p 5433 -U admin && break
-            echo "Waiting for postgres..."
-            sleep 2
-          done
-          if ! pg_isready -h localhost -p 5433 -U admin; then
-            echo "Postgres not responding after 60 seconds"
-            exit 1
-          fi
-
-      - name: Install dependencies
+      - name: Install dependencies (attendance)
         run: npm install
         working-directory: attendance
 
-      - name: Run tests
-        run: npm test
-        working-directory: attendance
-        env:
-          DATABASE_URL: postgresql://admin:admin@localhost:5433/attendance_db
-
-      - name: Build project
+      - name: Build attendance
         run: npm run build
         working-directory: attendance
+
+      - name: Install dependencies (employees)
+        run: npm install
+        working-directory: employees
+
+      - name: Build employees
+        run: npm run build
+        working-directory: employees
+
+      - name: Install dependencies (payroll)
+        run: npm install
+        working-directory: payroll
+
+      - name: Build payroll
+        run: npm run build
+        working-directory: payroll
+
+      - name: Install dependencies (tax)
+        run: npm install
+        working-directory: tax
+
+      - name: Build tax
+        run: npm run build
+        working-directory: tax
