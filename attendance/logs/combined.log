@@ -6,3 +6,6 @@
 [2025-06-07 02:25:04] INFO: Attendance service running on port 3002
 [2025-06-07 02:25:04] INFO: Attendance recorded: employeeId=1, date=2025-06-06, hours=5
 [2025-06-08 00:08:21] INFO: Attendance service running on port 3002
+[2025-06-08 17:28:47] INFO: Attendance service running on port 3002
+[2025-06-08 17:28:47] INFO: Attendance recorded: employeeId=1, date=2025-06-08, hours=5
+[2025-06-08 17:28:47] ERROR: Error creating attendance record: AggregateError

@@ -1,2 +1,3 @@
 [2025-06-07 02:22:01] ERROR: Error fetching attendance: Error: getaddrinfo ENOTFOUND postgres
 [2025-06-07 02:22:01] ERROR: Error creating attendance record: Error: getaddrinfo ENOTFOUND postgres
+[2025-06-08 17:28:47] ERROR: Error creating attendance record: AggregateError
