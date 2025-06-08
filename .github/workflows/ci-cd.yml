@@ -16,7 +16,7 @@ jobs:
           POSTGRES_PASSWORD: admin
           POSTGRES_DB: attendance_db
         ports:
-          - 5432:5432
+          - 5433:5432
         options: >-
           --health-cmd="pg_isready -U admin"
           --health-interval=10s
@@ -32,12 +32,20 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
       - name: Wait for Postgres to be ready
         run: |
-          until pg_isready -h postgres -p 5432 -U admin; do
+          for i in {1..30}; do
+            pg_isready -h localhost -p 5433 -U admin && break
             echo "Waiting for postgres..."
             sleep 2
           done
+          if ! pg_isready -h localhost -p 5433 -U admin; then
+            echo "Postgres not responding after 60 seconds"
+            exit 1
+          fi
 
       - name: Install dependencies
         run: npm install
@@ -47,7 +55,7 @@ jobs:
         run: npm test
         working-directory: attendance
         env:
-          DATABASE_URL: postgresql://admin:admin@postgres:5432/attendance_db
+          DATABASE_URL: postgresql://admin:admin@localhost:5433/attendance_db
 
       - name: Build project
         run: npm run build
