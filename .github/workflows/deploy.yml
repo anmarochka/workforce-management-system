@@ -1,0 +1,67 @@
+name: Deploy to Azure
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy attendance service
+        run: |
+          az containerapp create \
+            --name attendance-api \
+            --resource-group workforce-rg \
+            --environment workforce-env \
+            --image anmarochka/attendance-service:v1 \
+            --target-port 3002 \
+            --ingress external \
+            --env-vars DATABASE_URL=postgresql://pgadminuser:Admin123!@workforce-postgres.postgres.database.azure.com/attendance_db \
+            --revision-suffix fix-attendance
+
+      - name: Deploy employees service
+        run: |
+          az containerapp create \
+            --name employees-api \
+            --resource-group workforce-rg \
+            --environment workforce-env \
+            --image anmarochka/employees-service:v1 \
+            --target-port 3001 \
+            --ingress external \
+            --env-vars DATABASE_URL=postgresql://pgadminuser:Admin123!@workforce-postgres.postgres.database.azure.com/employees_db \
+            --revision-suffix fix-employees
+
+      - name: Deploy payroll service
+        run: |
+          az containerapp create \
+            --name payroll-api \
+            --resource-group workforce-rg \
+            --environment workforce-env \
+            --image anmarochka/payroll-service:v1 \
+            --target-port 3003 \
+            --ingress external \
+            --env-vars DATABASE_URL=postgresql://pgadminuser:Admin123!@workforce-postgres.postgres.database.azure.com/payroll_db \
+            --revision-suffix fix-payroll
+
+      - name: Deploy tax service
+        run: |
+          az containerapp create \
+            --name tax-api \
+            --resource-group workforce-rg \
+            --environment workforce-env \
+            --image anmarochka/tax-service:v1 \
+            --target-port 3004 \
+            --ingress external \
+            --env-vars DATABASE_URL=postgresql://pgadminuser:Admin123!@workforce-postgres.postgres.database.azure.com/tax_db \
+            --revision-suffix fix-tax
